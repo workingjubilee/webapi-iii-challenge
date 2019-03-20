@@ -80,9 +80,9 @@ router.get('/:id', async (req, res) => {
 // crUd
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { title, contents } = req.body;
+  const { user_id, text } = req.body;
   
-  if (!text) {
+  if ( !user_id || !text ) {
 
     res.status(400).json({
      errorMessage: "Please provide title and contents for the post."
@@ -90,7 +90,7 @@ router.put('/:id', async (req, res) => {
   } else {
 
     try {
-      const update = await Posts.update(id, { title, contents });
+      const update = await Posts.update(id, { user_id, text });
 
       if (update > 0) {
         const post = await Posts.getById(id);
