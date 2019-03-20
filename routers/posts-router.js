@@ -10,9 +10,9 @@ const Posts = require('../data/helpers/postDb.js');
 const router = express.Router();
 
 // Schema:
-//   "id": 14,
-//   "text": "Is it secret?! Is it safe?!",
-//   "user_id": 5
+//   "id": 14, //generated
+//   "text": "Is it secret?! Is it safe?!", //required
+//   "user_id": 5 //required
 
 // Crud
 router.post('/', async (req, res) => {
