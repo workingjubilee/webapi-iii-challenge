@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
 
   try {
-    const posts = await Posts.find();
+    const posts = await Posts.get();
 
     res.status(200).json(posts);
 

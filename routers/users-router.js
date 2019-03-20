@@ -13,16 +13,22 @@ const router = express.Router();
 router.get('/', async (req, res) => {
 
   try {
-    const posts = await Posts.find();
+    const users = await Users.get();
 
-    res.status(200).json(posts);
+    res.status(200).json(users);
 
   } catch(error) {
     res.status(500).json({ 
-      error: "The posts could not be retrieved."
+      error: "The users could not be retrieved."
     });
   }
 });
+
+// other methods to implement: 
+//   .getUserById(id)
+//   .insert({user})
+//   .update(id, {user})
+//   .remove(id)
 
 
 module.exports = router;
