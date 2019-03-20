@@ -9,6 +9,10 @@ const Users = require('../data/helpers/userDb.js');
 
 const router = express.Router();
 
+// Schema:
+//   "id": 1,
+//   "name": "Frodo Baggins"
+
 // cRud
 router.get('/', async (req, res) => {
 

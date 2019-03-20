@@ -9,34 +9,25 @@ const Posts = require('../data/helpers/postDb.js');
 
 const router = express.Router();
 
-// ```js
-// {
-//   title: "The post title", // String, required
-//   contents: "The post contents", // String, required
-//   created_at: Mon Aug 14 2017 12:50:16 GMT-0700 (PDT) // Date, defaults to current date
-//   updated_at: Mon Aug 14 2017 12:50:16 GMT-0700 (PDT) // Date, defaults to current date
-// }
-
-// | POST   | /api/posts     | Creates a post using the information sent inside the `request body`.                                                                                                        |
-// | GET    | /api/posts     | Returns an array of all the post objects contained in the database.                                                                                                         |
-// | GET    | /api/posts/:id | Returns the post object with the specified id.                                                                                                                              |
-// | DELETE | /api/posts/:id | Removes the post with the specified id and returns the **deleted post object**. You may need to make additional calls to the database in order to satisfy this requirement. |
-// | PUT    | /api/posts/:id | Updates the post with the specified `id` using data from the `request body`. Returns the modified document, **NOT the original**.      
+// Schema:
+//   "id": 14,
+//   "text": "Is it secret?! Is it safe?!",
+//   "user_id": 5
 
 // Crud
 router.post('/', async (req, res) => {
-  const { title, contents } = req.body;
+  const { user_id, text } = req.body;
   
-  if (!title || !contents) {
+  if ( !user_id || !text ) {
 
     res.status(400).json({
-     errorMessage: "Please provide title and contents for the post."
+     errorMessage: "Please provide text for the post."
    })
 
   } else {
 
     try {
-      const post = await Posts.insert({ title, contents });
+      const post = await Posts.insert({ user_id, text });
       res.status(201).json(post);
     } catch(error) {
       res.status(500).json({
@@ -68,9 +59,9 @@ router.get('/:id', async (req, res) => {
   const { id } = req.params;
   
   try {
-    const post = await Posts.findById(id);
+    const post = await Posts.getById(id);
 
-    if (post.length > 0) {
+    if (post) {
       res.status(200).json(post);
     } else {
       res.status(404).json({
@@ -91,7 +82,7 @@ router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { title, contents } = req.body;
   
-  if (!title || !contents) {
+  if (!text) {
 
     res.status(400).json({
      errorMessage: "Please provide title and contents for the post."
@@ -102,7 +93,7 @@ router.put('/:id', async (req, res) => {
       const update = await Posts.update(id, { title, contents });
 
       if (update > 0) {
-        const post = await Posts.findById(id);
+        const post = await Posts.getById(id);
         res.status(200).json(post);
       } else {
         res.status(404).json({
@@ -124,7 +115,7 @@ router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    const deletedPost = await Posts.findById(id);
+    const deletedPost = await Posts.getById(id);
 
     if (deletedPost) {
 
