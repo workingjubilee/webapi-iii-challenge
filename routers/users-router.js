@@ -151,5 +151,27 @@ router.delete('/:id', async (req, res) => {
 //   .update(id, {user})
 //   .remove(id)
 
+// cRud
+router.get('/:id/posts', async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    const posts = await Users.getUserPosts(id);
+
+    if (posts) {
+      res.status(200).json(posts);
+    } else {
+      res.status(404).json({
+        error: "The posts could not be found."
+      });
+    }
+
+  } catch(error) {
+    res.status(500).json({
+      error: "Error retrieving user."
+    });
+  }
+});
+
 
 module.exports = router;
